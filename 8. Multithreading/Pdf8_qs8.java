@@ -1,0 +1,68 @@
+/*
+ * 8. Write a program, which will create a deadlock.
+ */
+
+package Pdf8;
+
+public class Pdf8_qs8 {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		
+		final String resource1 = "Resource 1";
+		final String resource2 = "Resource 2";
+		Thread thread1 = new Thread(() -> {
+            synchronized (resource1) {
+                System.out.println("Thread 1: Locked resource 1");
+
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                synchronized (resource2) {
+                    System.out.println("Thread 1: Locked resource 2");
+                }
+            }
+        });
+
+        Thread thread2 = new Thread(() -> {
+            synchronized (resource2) {
+                System.out.println("Thread 2: Locked resource 2");
+
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                synchronized (resource1) {
+                    System.out.println("Thread 2: Locked resource 1");
+                }
+            }
+        });
+
+        thread1.start();
+        thread2.start();
+		
+		
+		
+
+	}
+
+}
+
+
+/*
+Output
+
+SET 1:
+Thread 1: Locked resource 1
+Thread 2: Locked resource 2
+
+SET 2:
+Thread 2: Locked resource 2
+Thread 1: Locked resource 1
+
+*/
